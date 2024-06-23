@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Library | Cart{% endblock %}
+
+
+{% block body %}
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+            <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-lg-8" style="background-color: ghostwhite;">
+                            <div class="p-5">
+                                <div class="d-flex justify-content-between align-items-center mb-5">
+                                    <h3 class="fw-bold mb-0 text-black">Shopping Cart</h3>
+                                </div>
+                                <hr class="my-4">
+                                {% if data is not empty %}
+                                
+                                {% for item in data %}
+                        
+                                <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="{{upload_dir}}/{{item.cover}}" class="img-fluid rounded-3">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <h6 class="text-muted"> {{ item.title }}</h6>
+                                        <h6 class="text-black mb-0">{{ item.author }}</h6>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h6 id="price" class="mb-0">{{ item.price }}лв</h6>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="/cart/delete/{{item.id}}" class="text-muted"><i
+                                                class="fas fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4">
+                                {% endfor %}
+
+                                {% endif %}
+
+                                <div class="pt-5">
+                                    <h6 class=""><a href="{{ path('index') }}" class="text-body"><i
+                                                class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 bg-grey">
+                            <div class="p-5">
+                                <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                                <hr class="my-4">
+
+                                <div class="d-flex justify-content-between mb-4">
+                                    <h5 class="text-uppercase">items : {{data|length }}</h5>
+                                    </h5>
+                                </div>
+                                <hr class="my-4">
+                                <div class="d-flex justify-content-between mb-5">
+                                    <h5 class="text-uppercase">Total price</h5>
+                                    <h5 id="totalPrice"></h5>
+                                </div>
+
+                                <div id="paypal-button-container"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ asset('js/cart.js') }}"></script>
+<link href="{{ asset('css/cart.css') }}" type="text/css" rel="stylesheet" />
+<script
+    {# src="https://www.paypal.com/sdk/js?client-id=AVgysO3goklzIaZbNvAnLRQz9LSDf1oNwl3tDwrtA_dV3c5eEXLXL3DvIjQP4Z_haUrZhDlytuX2UPLd&¤cy=EUR"></script> #}
+    <script src="https://www.paypal.com/sdk/js?client-id=AVgysO3goklzIaZbNvAnLRQz9LSDf1oNwl3tDwrtA_dV3c5eEXLXL3DvIjQP4Z_haUrZhDlytuX2UPLd&currency=EUR">
+    </script>
+<script>
+    let = price = document.getElementById('totalPrice').textContent.split(' ')[0];
+    paypal.Buttons({
+        // All your options here !
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                intent: 'capture',  // capture or authorize
+                purchase_units: [{
+                    amount: {
+                        value: (price/1.96).toFixed(2)
+                    },
+                    description: 'Magical unicorn',
+                    invoice_id: '1234567890',
+                    soft_descriptor: 'unicorn-2345678'
+                }],
+                application_context: {
+                    brand_name: 'Your E-Library',
+                    shipping_preference: 'NO_SHIPPING' // if you handle shipping
+                }
+            });
+        },
+        // Finalizes the transaction after payer approval
+        onApprove: (data) => {
+            
+            console.log('Unicorn bought, yay !')
+            window.location.href = 'http://127.0.0.1/user/order';
+        },
+        // The user closed the window
+        onCancel: () => {
+            console.log('The user canceled the payment');
+        },
+        onError: (err) => {
+            console.log('Something went wrong', err);
+        }
+    }).render('#paypal-button-container');
+</script>
+
+{% endblock %}

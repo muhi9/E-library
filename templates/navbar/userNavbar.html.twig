@@ -1,0 +1,44 @@
+{% block stylesheets %}
+<link href="{{ asset('css/userNavbar.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+<div>
+    <nav>
+        <ul>
+            <li>
+                <a href="#">
+                    <span class="material-icons-outlined" style="font-size: 33px;">notifications_none</span>
+                </a>
+            </li>
+            <li>
+                <span class="material-icons-outlined" style="font-size: 33px;"> account_circle </span>
+                <ul>
+                    <li style="padding-left: 58px;">
+                        <p style="font-size: 16px;color:black"> Hello {{ app.user.firstname }} {{ app.user.lastname }}
+                        </p>
+                    </li>
+                    <a href="/user/books" style="text-decoration:none">
+                        <li class="sub-item">
+                            <span class="material-icons-outlined">
+                                format_list_bulleted
+                            </span>
+                            <p>My Orders/Books</p>
+                        </li>
+                    </a>
+                    <a href="/user/edit/{{app.user.id}}" style="text-decoration:none">
+                        <li class="sub-item">
+                            <span class="material-icons-outlined"> manage_accounts </span>
+                            <p>Update Profile</p>
+                        </li>
+                    </a>
+                    <a href="/logout" style="text-decoration:none">
+                        <li class="sub-item">
+                            <span class="material-icons-outlined"> logout </span>
+                            <p>Logout</p>
+                        </li>
+                    </a>
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+</div>

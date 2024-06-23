@@ -1,0 +1,147 @@
+<link href="{{ asset('css/searchBox.css') }}" type="text/css" rel="stylesheet" />
+
+<div class="d-flex flex-row ">
+  <div>
+    <form action="" method="get">
+      <div class="search-box">
+        <button id="btnSbmt" class="btn-search"><i class="fas fa-search"></i></button>
+        <input type="text" name="bookName" class="input-search" value="{{filter|default('')}}"
+        placeholder="Type book name...">
+      </div>
+      <br>
+    </form>
+  </div>
+    {% include "\\filters.html.twig" %}
+</div>
+
+
+
+{# <div class="buttons">
+  <button id="all" type="button" class="btn-clicked">
+    All
+  </button>
+  <button type="button" data-btn="1">
+    Technical literature
+  </button>
+  <button type="button" data-btn="3">
+    Engineering
+  </button>
+  <button type="button" data-btn="10">
+    Programing
+  </button>
+  <button type="button" data-btn="5">
+    Computer Science
+  </button>
+</div> #}
+
+<div class="container" style="margin-top: 5rem;">
+  <div class="row">
+    {% if data is empty %}
+    <h3> There are no matches!</h3>
+    {% endif %}
+    {% for book in data %}
+    <div class="col-sm-3" style="margin-bottom: 1rem">
+      <a href="/book/info/{{ book.id }}">
+        <img class="img" src="{{upload_dir}}/{{book.cover}}" style="width: 65%; height: 80%">
+      </a>
+      <div style="margin-top: 1rem;">
+        <h6 class="text-muted"> {{book.author}}</h6>
+        <h6>{{book.title}}</h6>
+        <br>
+      </div>
+    </div>
+
+    {% endfor %}
+
+  </div>
+</div>
+
+{# <style>
+  .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .buttons button {
+    margin: 1em;
+    padding: 0.7em 1.5em;
+    font-size: 1.1em;
+    border: none;
+    background: #111;
+    color: #fff;
+    border: 2px solid #111;
+    border-radius: 0.2em;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .buttons button:hover,
+  .buttons .btn-clicked {
+    background: #fff;
+    color: #111;
+  }
+
+  .img-expand {
+    display: block;
+  }
+
+  .img-shrink {
+    display: none;
+  }
+</style> #}
+{#
+<script>
+
+  const btns = document.querySelectorAll('.buttons button');
+  const imgs = document.getElementsByTagName('img');
+
+  for (let i = 1; i < btns.length; i++) {
+    btns[i].addEventListener('click', filterlmg);
+  }
+
+  function setActiveBtn(e) {
+    //Remove active class from all buttons
+    btns.forEach(btn => {
+      btn.classList.remove('btn-clicked');
+    });
+    // Add active class to clicked button
+    e.target.classList.add('btn-clicked')
+  };
+
+  function filterlmg(e) {
+    //Run the active button function
+    setActiveBtn(e);
+    // Loop through all images
+    for (img of imgs) {
+      // Expand all images
+      img.parentElement.parentElement.classList.remove('img-shrink');
+      img.parentElement.parentElement.classList.add('img-expand');
+
+      const imgType = parseInt(img.dataset.img);
+      const btnType = parseInt(e.target.dataset.btn);
+      console.log(imgType);
+      console.log(btnType);
+      if (imgType !== btnType) {
+        //Hide the image
+        img.parentElement.parentElement.classList.remove('img-expand');
+        img.parentElement.parentElement.classList.add('img-shrink');
+      }
+
+    }
+  }
+
+  // Set click event for the 'ALL' button
+  document.getElementById('all').addEventListener('click', (e) => {
+    //Run the active button function
+    setActiveBtn(e);
+    // Loop through all images
+    for (img of imgs) {
+
+      // Expand all images
+      img.parentElement.parentElement.classList.remove('img-shrink');
+      img.parentElement.parentElement.classList.add('img-expand');
+    }
+  }); 
+</script> #}

@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+{% block title %}E-lybrary | Authors{% endblock %}
+
+{% block body %}
+<link href="{{ asset('css/searchBox.css') }}" type="text/css" rel="stylesheet" />
+
+<button type="button" class="btn" style="top: 7rem;position: absolute;right: 7rem;background-color: #e8e8e8;">
+    <a href=" {{ path('addAuthor_book')}} "> Add new Author</a>
+    </a>
+</button>
+
+<form action="authors" method="get">
+    <div class="search-box">
+        <button id="btnSbmt" class="btn-search"><i class="fas fa-search"></i></button>
+        <input type="text" name="authorName" class="input-search" value="{{filter|default('')}}"
+            placeholder="Type to Search...">
+    </div>
+    <br>
+</form>
+
+{% if data is empty %}
+<p> Not matching author !</p>
+{% else %}
+
+{% if 'ROLE_USER' not in app.user.getRoles[0] and 'ROLE_CLIENT' not in app.user.getRoles[0] and
+      'ROLE_STUDENT' not in app.user.getRoles[0] %}
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Author Name</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+      
+        <tbody>
+          {% for a in data %}
+          <tr>
+            <td>{{a.id}}</td>
+            <td>{{a.name}}</td>
+            <td>
+              <a class="fa"  href="{{ path('author_edit', {'id': a.id}) }}"><i class="fa-solid fa-pencil"></i></a>
+              <a class="fa"  href="{{ path('author_delete', {'id': a.id}) }}"><i class="fa-regular fa-circle-xmark"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+      
+        </tbody>
+      </table>
+
+{% else %}
+
+<div>
+    <table class="table table-striped" style="width: 25%">
+        <tbody>
+            <thead class="table-dark">
+                <th scope="row">Authors</th>
+                <th scope="row">Name</th>
+            </thead>
+
+            {% if data is empty %}
+            <p> Not matching author !</p>
+            {% endif %}
+
+            {% for row in data %}
+            <tr>
+                <td>
+                    <a href="/book/authorsBooks/{{row.name}}">{{row.name}}</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+<script>
+    window.onload = function () {
+        let rows = $("tr")
+
+        for (var i = 0; i < rows.length; i++) {
+            var newCell = rows[i + 1].insertCell(0);
+            newCell.innerHTML = i + 1;
+        }
+    }
+
+    let url = window.location.href.split('?')[1].split('=')[1];
+    if (url.length > 0) {
+        document.querySelector('.input-search').focus()
+    }
+</script>
+{% endif %}
+{% endif %}
+
+
+{% endblock %}

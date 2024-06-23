@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+{% block title %}E-lybrary | Book{% endblock %}
+{% block body %}
+<div>
+    <div class="d-flex flex-row bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+            <img src="{{upload_dir}}/{{data.cover}}" style="width: 260px; height: 380px">
+        </div>
+        <div class="p-2 bd-highlight">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row">Title</th>
+                        <td>{{data.title}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Category</th>
+                        <td>{{category}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Author</th>
+                        <td>{{data.author}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Release Year</th>
+                        <td>{{data.releaseYear}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Publishing House</th>
+                        <td>{{data.publishingHouse}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Price</th>
+                        {% if data.price <=0 %} <td> - </td>
+                            {% else %}
+                            <td>{{data.price}} лв</td>
+                            {% endif %}
+                    </tr>
+                    <tr>
+                        <th scope="row">Views</th>
+                        <td>{{data.views}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Description</th>
+                        <td>{{data.description|raw}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="icons">
+
+        {% if data.price <= 0 %} <button type="button" id="view" class="btn">
+            <a href="{{upload_dir}}/{{data.book}}"> <i class="fa-solid fa-book-open-reader fa-2xl"></i></a>
+            </button>
+            <button type="button" id="download" class="btn">
+                <a href="{{upload_dir}}/{{data.book}}" download>
+                    <i class="fa-solid fa-file-arrow-down" style="font-size: 30px;"></i>
+                </a>
+            </button>
+
+            {% else %}
+            <button type="button" id="download" class="btn">
+                <a href="{{ path('cart_add' ,{'id': data.id}) }}">
+                    <i class="fa-solid fa-file-arrow-down fa-lg"></i>
+                </a>
+            </button>
+            {% endif %}
+    </div>
+
+</div>
+<style>
+    img {
+        size: 300px 480px;
+    }
+</style>
+{% endblock %}

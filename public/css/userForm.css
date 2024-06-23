@@ -1,0 +1,72 @@
+.container {
+    margin-top: 5rem;
+}
+.card {
+    background-color: #ededed;
+    padding: 30px 40px;
+    margin-bottom: 5rem;
+    border: none !important;
+    box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2)
+}
+
+.blue-text {
+    color: #00BCD4
+}
+
+.form-control-label {
+    margin-bottom: 0
+}
+
+input,
+textarea {
+    border-radius: 5px !important;
+    margin-top: 5px;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    font-size: 18px !important;
+}
+
+input:focus,
+textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #00BCD4;
+    outline-width: 0;
+    font-weight: 400
+}
+
+.btn-block {
+    font-size: 15px !important;
+    font-weight: 400;
+    height: 43px;
+    cursor: pointer
+}
+
+.btn-block:hover {
+    color: #fff !important
+}
+
+button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0
+}
+
+.input-box {
+    display: inline-block;
+    padding: 0.5em;
+    margin: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 50ch;
+    /* Adjust this value based on your max_width constraint */
+}
+
+.chek {
+    place-items: center;
+    align-self: center;
+}

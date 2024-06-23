@@ -1,0 +1,65 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    atabase_host: localhost
+    database_port: null
+    database_name: 
+    database_user: root
+    database_password: null
+    secret: ThisTokenIsNotSoSecretChangeIt
+    baseurl: 'http://127.0.0.1:8000/'
+    sender_name: PM
+    mailer_transport: smtp
+    mailer_host: 
+    mailer_user: 
+    mailer_password: 
+    mailer_encryption: ssl
+    mailer_auth_mode: login
+    mailer_port: 465
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    user.permissions: 
+        class: 'App\Service\UserPermissions'
+    #     arguments:
+    #         - "@doctrine.orm.entity_manager"
+    #         - '@security.token_storage'
+        public: true
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+
+    app.mailer: 
+        class: 'App\Service\Mailer'
+        arguments:  ['@service_container', '@mailer']
+        public: true
+        autowire: true
+        autoconfigure: true 
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%kernel.project_dir%/public/uploads'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    gedmo.listener.softdeleteable:
+        class: Gedmo\SoftDeleteable\SoftDeleteableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]

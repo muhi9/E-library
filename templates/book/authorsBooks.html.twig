@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}E-lybrary | Authors{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        {% for book in data %}
+        <div class="col-sm-3" style="margin-bottom: 1rem">
+            <a href="/book/info/{{ book.id }}">
+                <img class="img" src="{{upload_dir}}/{{book.cover}}" style="width: 65%; height: 80%">
+            </a>
+            <div style="margin-top: 1rem;">
+                <h6 class="text-muted"> {{book.author}}</h6>
+                <h6>{{book.title}}</h6>
+                <br>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

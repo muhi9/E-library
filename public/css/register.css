@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ececec;
+    /* background-image: url("https://cutewallpaper.org/25/bbokshelf-desktop-wallpaper/1148611066.jpg");  */
+}
+
+.container{
+    margin-top: 0rem;
+}
+
+ 
+#box {
+    --bs-bg-opacity: 2; 
+}  
+
+.form-group {
+    display: flex;
+
+    .form-wrapper {
+        width: 50%;
+
+        &:first-child {
+            margin-right: 20px;
+        }
+    }
+}
+
+.form-wrapper {
+    margin-bottom: 17px;
+
+    label {
+        margin-bottom: 9px;
+        display: block;
+    }
+}
+
+/*------------ Login container ------------*/
+
+.box-area {
+    width: 930px;
+}
+
+/*------------ Right box ------------*/
+
+.right-box {
+    padding: 40px 30px 40px 40px;
+}
+
+/*------------ Custom Placeholder ------------*/
+
+::placeholder {
+    font-size: 16px;
+}
+
+.rounded-4 {
+    border-radius: 20px;
+}
+
+.rounded-5 {
+    border-radius: 30px;
+}
+
+
+/*------------ For small screens------------*/
+
+@media only screen and (max-width: 768px) {
+
+    .box-area {
+        margin: 0 10px;
+
+    }
+
+    .left-box {
+        height: 100px;
+        overflow: hidden;
+    }
+
+    .right-box {
+        padding: 20px;
+    }
+
+}

@@ -1,0 +1,38 @@
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
+
+register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+
+login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+logout:
+    path: /logout
+ 
+verify_email:
+    path: /verify/email
+    controller: App\Controller\RegistrationController::confirmation_email    
+
+homepage:
+    path: /homepage
+    controller: App\Controller\DefaultController::homepage
+
+book:
+    path: /book
+    controller: App\Controller\BookController::index    
+
+category:
+    path: /category
+    controller: App\Controller\CategoryController::index 
+
+cart:
+    path: /cart
+    controller: App\Controller\CartController::listAction    
+
+footer:
+    path: /footer
+    controller: App\Controller\FooterController::about    

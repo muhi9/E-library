@@ -1,0 +1,58 @@
+{% block stylesheets %}
+<link href="{{ asset('css/sideBar.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/sideBar.js') }}"></script>
+{% endblock %}
+
+<body id="body-pd">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+        {% include "\\navbar\\navbar.html.twig" %}
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav" style="background: #4723D9;">
+            <div> 
+                <a href="#" class="nav_logo"> 
+                    {# <i class='bx bx-layer nav_logo-icon'></i>#} <span></span>  
+                </a>
+                <div class="nav_list"> 
+                    <a href={{ path('index') }} class="nav_link index active"> 
+                        <i class='bx bx-grid-alt nav_icon'></i>
+                        <span class="nav_name">Dashboard</span> 
+                    </a> 
+           
+                    {% if app.user != null and app.user.roles[0]=="ROLE_ADMIN" %}
+                    <a href={{ path('user') }} class="nav_link user"> 
+                        <i class='bx bx-user nav_icon'></i> 
+                        <span class="nav_name">Users</span>
+                    </a>
+                    {% endif %}
+
+                    <a href={{ path('book') }} class="nav_link book"> 
+                        <i class='bx bx-book-alt nav_icon'></i> 
+                        <span class="nav_name">Books</span> 
+                    </a> 
+
+                    {% if 'ROLE_ADMIN' in app.user.getRoles or 'ROLE_LIBRARIAN'  in app.user.getRoles() %}
+                    <a href={{ path('category_book') }} class="nav_link category"> 
+                        <i class='bx bx-category nav_icon'></i> 
+                        <span class="nav_name">Categories</span> 
+                    </a> 
+                    {% endif %}
+
+                    <a href={{ path('authors_book') }} class="nav_link authors"> 
+                        <i class='bx bxs-pen  nav_icon'></i> 
+                        <span class="nav_name">Authors</span> 
+                    </a> 
+                    <a href= {{ path('cart') }} class="nav_link cart"> 
+                        <i class='bx bx-cart-download nav_icon' ></i>
+                        <span class="nav_name">Cart</span> 
+                    </a>
+                </div>
+            </div> 
+        </nav>
+    </div>
+</body>    
+   

@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} E-Library {% endblock %}
+
+{% block body %}
+
+{{ render(controller('App\\Controller\\DefaultController::homepage', {'request':app.request})) }}  
+{% endblock %}

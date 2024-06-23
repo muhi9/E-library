@@ -1,0 +1,40 @@
+<div class="d-flex p-2 bd-highlight">
+    <form action="" method="get" class="filter d-flex flex-row form1">
+        <select id="category" name="category" class="form-select-md form-select-sm" aria-label=".form-select-sm example"
+            style="height: 2rem;" onchange="this.form.submit()">
+            <option value="">Select category</option>
+            {% for c in categories %}
+            <option value="{{ c.id}}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+        <div class="">
+            <label id="lb" for="customRange1" class="form-label lb">Year range:</label>
+            <input type="number" id="year-min" name="year_min" min="1888" max={{ "now" |date("Y") }}> -
+            <input type="number" id="year-max" name="year_max" min='1888' max={{ "now" |date("Y") }} value="{{ " now"
+                |date("Y") }}">
+            <input id="btnSbmt" class="btn btn-primary sbm" type="submit" value="Search">
+        </div>
+    </form>
+</div>
+<script>
+    let url = window.location.href.split('?')[1].split('&');
+
+    if (url.length > 1) {
+
+        let categoryId = url[0].split('=')[1]
+        let yearMin = url[1].split('=')[1]
+        let yearMax = url[2].split('=')[1]
+
+        if (categoryId != "") {
+            document.getElementById('category').value = categoryId
+        }
+
+        if (yearMin != "") {
+            document.getElementById('year-min').value = yearMin
+        }
+
+        if (yearMax != "") {
+            document.getElementById('year-max').value = yearMax
+        }
+    }
+</script>

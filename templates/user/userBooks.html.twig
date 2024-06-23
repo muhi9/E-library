@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-Library | User Books{% endblock %}
+{% block body %}
+
+
+<table class="table" id="list">
+    <thead>
+        <tr>
+            {# <th scope="col">ID</th> #}
+            <th scope="col">Cover</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Price</th>
+            <th scope="col">Date of purchase</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in data %}
+        <tr>
+            <td> <img src="{{upload_dir}}/{{book.cover}}" width="100" /></td>
+            <td><a href="{{upload_dir}}/{{book.bookFile}}">{{book.title}}</a></td>
+            <td>{{book.author}}</td>
+            <td>{{book.price}}</td>
+            <td>{{book.date}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
