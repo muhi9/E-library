@@ -1,13 +1,23 @@
 {% block stylesheets %}
 <link href="{{ asset('css/userNavbar.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
+
 <div>
     <nav>
         <ul>
             <li>
-                <a href="#">
-                    <span class="material-icons-outlined" style="font-size: 33px;">notifications_none</span>
+                {% if 'ROLE_USER' not in app.user.getRoles[0] and 'ROLE_CLIENT' not in app.user.getRoles[0]
+                and 'ROLE_STUDENT' not in app.user.getRoles[0] %}
+                <a href="/notifications_create">
+                    <span id='notification' class="material-icons-outlined"
+                        style="font-size: 33px;">notifications_none</span>
                 </a>
+                {% else %}
+                <a onclick="notification()">
+                    <span id='notification' class="material-icons-outlined"
+                        style="font-size: 33px;">notifications_none</span>
+                </a>
+                {% endif %}
             </li>
             <li>
                 <span class="material-icons-outlined" style="font-size: 33px;"> account_circle </span>
@@ -42,3 +52,60 @@
         </ul>
     </nav>
 </div>
+
+
+
+
+<!-- Modal -->
+<div id='modal' class="modal-dialog" style="position: fixed;width: 100%;height: auto;
+                                            left: 62rem;top: 37px;display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Notifications &#128276;</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                onclick="close()"></button>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                onclick="close()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+  
+    function notification() {
+        close()
+        $.get('notifications', function (data) {
+          //  var res = $.parseJSON(data);
+            for (e of data) {
+                $(".modal-body").append('<div  class="notification_message"> <div <h5 class="text-uppercase fw-bold bg-light"> ' +   e.subject + ' </h5></div> <div class="toast-body"> ' + e.description + ' </div><hr></div>');
+            }
+        });
+    }
+
+    function close(){
+        $('.modal-body', document).html('');
+        let modal = document.getElementById("modal")
+        if (modal.style.display == "none") {
+            modal.style.display = "block"
+        } else {
+            modal.style.display = 'none'
+        }
+    }
+
+     window.onload = function () {
+        $('.modal-body', document).html('');
+        let modal = document.getElementById("modal")
+        document.onclick = function (e) {
+            if (e.target.id !== 'notification') {
+                //element clicked wasn't the div; hide the div
+                modal.style.display = 'none';
+            }
+        };
+    };
+    
+
+
+</script>

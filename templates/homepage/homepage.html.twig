@@ -1,38 +1,18 @@
 <link href="{{ asset('css/searchBox.css') }}" type="text/css" rel="stylesheet" />
 
 <div class="d-flex flex-row ">
-  <div>
+  <div style="position: relative; top: 10px">
     <form action="" method="get">
       <div class="search-box">
         <button id="btnSbmt" class="btn-search"><i class="fas fa-search"></i></button>
         <input type="text" name="bookName" class="input-search" value="{{filter|default('')}}"
-        placeholder="Type book name...">
+          placeholder="Type book name...">
       </div>
       <br>
     </form>
   </div>
-    {% include "\\filters.html.twig" %}
+  {% include "\\filters.html.twig" %}
 </div>
-
-
-
-{# <div class="buttons">
-  <button id="all" type="button" class="btn-clicked">
-    All
-  </button>
-  <button type="button" data-btn="1">
-    Technical literature
-  </button>
-  <button type="button" data-btn="3">
-    Engineering
-  </button>
-  <button type="button" data-btn="10">
-    Programing
-  </button>
-  <button type="button" data-btn="5">
-    Computer Science
-  </button>
-</div> #}
 
 <div class="container" style="margin-top: 5rem;">
   <div class="row">

@@ -65,7 +65,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserBooks::class)]
     private Collection $userBooks;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Notifications::class)]
+    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Notifications::class)]
+    private Collection $createdBy;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notifications::class)]
     private Collection $notifications;
 
 
@@ -76,6 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->cart = new ArrayCollection();
         $this->userBooks = new ArrayCollection();
+        $this->createdBy = new ArrayCollection();
         $this->notifications = new ArrayCollection();
     }
 
@@ -315,6 +319,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Notifications>
      */
+    public function getCreatedBy(): Collection
+    {
+        return $this->createdBy;
+    }
+
+    public function addCreatedBy(Notifications $createdBy): static
+    {
+        if (!$this->createdBy->contains($createdBy)) {
+            $this->createdBy->add($createdBy);
+            $createdBy->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedBy(Notifications $createdBy): static
+    {
+        if ($this->createdBy->removeElement($createdBy)) {
+            // set the owning side to null (unless already changed)
+            if ($createdBy->getCreator() === $this) {
+                $createdBy->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notifications>
+     */
     public function getNotifications(): Collection
     {
         return $this->notifications;
@@ -324,7 +358,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->notifications->contains($notification)) {
             $this->notifications->add($notification);
-            $notification->setOwner($this);
+            $notification->setUser($this);
         }
 
         return $this;
@@ -334,8 +368,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->notifications->removeElement($notification)) {
             // set the owning side to null (unless already changed)
-            if ($notification->getOwner() === $this) {
-                $notification->setOwner(null);
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
             }
         }
 

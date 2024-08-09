@@ -72,8 +72,11 @@ class BookType extends AbstractType
                 'class' => Author::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => false
+                'expanded' => true,
+                'by_reference' => false
+                
             ])
+            
             ->add('releaseYear')
             ->add('publishingHouse')
             ->add('price')

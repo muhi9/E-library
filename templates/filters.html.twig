@@ -12,15 +12,18 @@
             <input type="number" id="year-min" name="year_min" min="1888" max={{ "now" |date("Y") }}> -
             <input type="number" id="year-max" name="year_max" min='1888' max={{ "now" |date("Y") }} value="{{ " now"
                 |date("Y") }}">
-            <input id="btnSbmt" class="btn btn-primary sbm" type="submit" value="Search">
+            <button id="btnSbmt" type="submit" class="btn btn-primary" value="Search" data-mdb-ripple-init>
+                <i class="fas fa-search"></i>
+            </button>
+            {# <input id="btnSbmt" class="btn btn-primary sbm" type="submit" value="Search"> #}
         </div>
     </form>
 </div>
 <script>
-    let url = window.location.href.split('?')[1].split('&');
-
-    if (url.length > 1) {
-
+    let url = window.location.href;
+    //.split('?')[1].split('&')
+    if (url.includes('?')) {
+        url = url.split('?')[1].split('&')
         let categoryId = url[0].split('=')[1]
         let yearMin = url[1].split('=')[1]
         let yearMax = url[2].split('=')[1]

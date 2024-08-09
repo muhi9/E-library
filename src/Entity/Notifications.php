@@ -14,30 +14,33 @@ class Notifications
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $subject = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $status = false;
+
+    #[ORM\ManyToOne(inversedBy: 'createdBy')]
+    private ?User $creator = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
-    private ?User $owner = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getSubject(): ?string
     {
-        return $this->title;
+        return $this->subject;
     }
 
-    public function setTitle(string $title): static
+    public function setSubject(string $subject): static
     {
-        $this->title = $title;
+        $this->subject = $subject;
 
         return $this;
     }
@@ -66,14 +69,26 @@ class Notifications
         return $this;
     }
 
-    public function getOwner(): ?User
+    public function getCreator(): ?User
     {
-        return $this->owner;
+        return $this->creator;
     }
 
-    public function setOwner(?User $owner): static
+    public function setCreator(?User $creator): static
     {
-        $this->owner = $owner;
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

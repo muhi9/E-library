@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}{{title|default()|trans }}{% endblock %}
+
+
+{% block body %}
+<div id="col" class="col-md-4" style="margin: auto;">
+    {{ form_start(form) }}
+    {{ form_row(form._token) }}
+    {# {{ form_row(form.save, {'attr': {'class': 'save'}}) }} #}
+    {{ form_end(form) }}
+
+</div>
+{# 
+<style>
+    .save {
+        margin-top: 1rem;
+        margin-left: 23rem;
+        background-color: blue;
+        color: white;
+    }
+
+    .container {
+        margin-bottom: 20rem;
+        margin-top: 14rem;
+    }
+</style> #}
+
+{% endblock body %}

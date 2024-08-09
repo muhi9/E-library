@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     /*===== LINK ACTIVE =====*/
     const linkColor = document.querySelectorAll('.nav_link')
     let routeData = document.getElementById('string-example-container').getAttribute('data-example-string')
-
     for (const elm of linkColor) {
         elm.classList.remove('active')
         if (elm.getAttribute("class").split(' ')[1] == routeData.split("_")[0]) {

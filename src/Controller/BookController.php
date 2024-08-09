@@ -128,7 +128,6 @@ class BookController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $book = $em->getRepository("App\Entity\Book")->find($id);
-
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 

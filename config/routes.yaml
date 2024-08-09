@@ -36,3 +36,7 @@ cart:
 footer:
     path: /footer
     controller: App\Controller\FooterController::about    
+
+# notifications:
+#     path:     /ajax_request
+#     controller: App\NotificationsController\::index 
