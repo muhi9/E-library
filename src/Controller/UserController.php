@@ -121,7 +121,7 @@ class UserController extends AbstractController
             $booksInfo[] = [
                 "bookId" => $b->getOrderedBook()->getValues()[0]->getId(),
                 "title" => $b->getOrderedBook()->getValues()[0]->getTitle(),
-                "author" => $b->getOrderedBook()->getValues()[0]->getAuthor(),
+                "author" => $b->getOrderedBook()->getValues()[0]->getAuthorList(),
                 "price" => $b->getPrice(),
                 "cover" => $b->getOrderedBook()->getValues()[0]->getCover(),
                 "bookFile" => $b->getOrderedBook()->getValues()[0]->getBook(),

@@ -69,23 +69,45 @@ class BookRepository extends ServiceEntityRepository
     //     return $authors;
     // }
 
-    // public function getAuthors()
-    // {
-    //     $qb = $this->createQueryBuilder('author');
-    //     $qb->select("author.name");
+    public function getBooks($admin)
+    {
+        $qb = $this->createQueryBuilder('b');
+        $qb->select('b');
+        if (!$admin=='admin') {
+            $qb->where('b.validation = 1');
+        }
+        $result =  $qb->getQuery()->getResult();
+        $books = array();
+        foreach ($result as $b) {
+            $books[] = [
+                'id' => $b->getId(),
+                'PDF' => $b->getBook(),
+                'title' => $b->getTitle(),
+                'releaseYear' => $b->getReleaseYear(),
+                'cover' => $b->getCover(),
+                'description' => $b->getDescription(),
+                'price' => $b->getPrice(),
+                'views' => $b->getViews(),
+                'isFree' => $b->isIsFree(),
+                'validation' => $b->isValidation(),
+                'isPublish' => $b->isIsPublish(),
+                'category' => $b->getCategoriList(),
+                'publishingHouse' => $b->getPublishingHouse(),
+                'author' => $b->getAuthorList(),
+            ];
+        };
 
-    //     return $qb->getQuery()->getResult();
-
-    // }
+        return $books;
+    }
 
     public function getAuthorsBooks(string $term)
     {
         $qb = $this->createQueryBuilder('book');
-        $qb->select('book');
-        $qb->andWhere('book.author LIKE :searchTerm')
-            ->setParameter('searchTerm', $term . '%');
-        $result =  $qb->getQuery()->getResult();
-        return $result;
+        $qb->leftJoin('book.avtor', 'avt')
+        ->andWhere('avt.name LIKE :searchTerm')
+        ->setParameter('searchTerm', $term . '%');
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findByTitle(string $term)
@@ -99,13 +121,35 @@ class BookRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function isValidated()
-    {
-        $qb = $this->createQueryBuilder('b');
-        $qb->select('b')
-            ->where('b.validation = 1');
+    // public function isValidated()
+    // {
+    //     $qb = $this->createQueryBuilder('b');
+    //     $qb->select('b')
+    //         ->where('b.validation = 1');
 
-        $result =  $qb->getQuery()->getResult();
-        return $result;
+    //     $result =  $qb->getQuery()->getResult();
+    //     return $result;
+    // }
+
+    public function Convert($data){
+        foreach ($data as $b) {
+            $books[] = [
+                'id' => $b->getId(),
+                'PDF' => $b->getBook(),
+                'title' => $b->getTitle(),
+                'releaseYear' => $b->getReleaseYear(),
+                'cover' => $b->getCover(),
+                'description' => $b->getDescription(),
+                'price' => $b->getPrice(),
+                'views' => $b->getViews(),
+                'isFree' => $b->isIsFree(),
+                'validation' => $b->isValidation(),
+                'isPublish' => $b->isIsPublish(),
+                'category' => $b->getCategoriList(),
+                'publishingHouse' => $b->getPublishingHouse(),
+                'author' => $b->getAuthorList(),
+            ];
+        };
+        return $books;
     }
 }

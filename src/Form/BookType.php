@@ -27,11 +27,12 @@ class BookType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $book = $options['data']->getTitle();
+        $user = $options['user'];
         $builder
             ->add('cover', FileType::class, [
                 'label' => 'Cover (IMG file)',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -55,7 +56,7 @@ class BookType extends AbstractType
             ->add('book', FileType::class, [
                 'label' => 'Book (PDF file)',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '2048k',
@@ -68,30 +69,35 @@ class BookType extends AbstractType
 
                 ],
             ])
-            ->add('author', EntityType::class, [
+            ->add('avtor', EntityType::class, [
                 'class' => Author::class,
                 'choice_label' => 'name',
+                'required' => true,
                 'multiple' => true,
                 'expanded' => true,
-                'by_reference' => false
-                
+                'by_reference' => true,
+
             ])
-            
+
             ->add('releaseYear')
             ->add('publishingHouse')
-            ->add('price')
+            ->add('price');
             // ->add('views')
-            ->add('isFree')
-            ->add('validation')
-            ->add('isPublish')
-
+            // ->add('isFree');
+        if ($user->getRoles()[0] == 'ROLE_LIBRARIAN'  or $user->getRoles()[0] == 'ROLE_ADMIN') {
+            $builder
+                ->add('validation')
+                ->add('isPublish');
+        }
+        $builder
             ->add('save', SubmitType::class);
     }
-        
+
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Book::class,
+            'user' => null,
         ]);
     }
 }

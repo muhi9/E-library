@@ -44,8 +44,6 @@ class CategoryRepository extends ServiceEntityRepository
         $qb->select("c.name");
         $result =  $qb->getQuery()->getResult();
         return $result;
-        dump($result);
-        die;
     }
 
 

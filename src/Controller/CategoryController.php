@@ -84,7 +84,7 @@ class CategoryController extends AbstractController
 
             return $this->redirectToRoute('login');
         }
-        $this->getDoctrine()->getRepository(Category::class)->find($id);
+        $this->getDoctrine()->getRepository(Category::class)->findBy(['deletedAt' => null]);
         $em = $this->getDoctrine()->getManager();
         $em->remove($id);
         $em->flush();

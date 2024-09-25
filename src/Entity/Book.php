@@ -31,9 +31,8 @@ class Book
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    private ?string $author = null;
+    // #[ORM\Column(length: 255)]
+    // private ?string $author = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -75,12 +74,16 @@ class Book
     #[ORM\ManyToMany(targetEntity: UserBooks::class, mappedBy: 'orderedBook')]
     private Collection $userBooks;
 
+    #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'books')]
+    private Collection $avtor;
+
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->cart = new ArrayCollection();
         $this->userBooks = new ArrayCollection();
+        $this->avtor = new ArrayCollection();
     }
 
    
@@ -113,17 +116,17 @@ class Book
         return $this;
     }
 
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
+    // public function getAuthor(): ?string
+    // {
+    //     return $this->author;
+    // }
 
-    public function setAuthor(string $author): static
-    {
-        $this->author = $author;
+    // public function setAuthor(string $author): static
+    // {
+    //     $this->author = $author;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getReleaseYear(): ?string
     {
@@ -337,6 +340,39 @@ class Book
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Author>
+     */
+    public function getAvtor(): Collection
+    {
+        return $this->avtor;
+    }
+
+    public function addAvtor(Author $avtor): static
+    {
+        if (!$this->avtor->contains($avtor)) {
+            $this->avtor->add($avtor);
+        }
+
+        return $this;
+    }
+
+    public function removeAvtor(Author $avtor): static
+    {
+        $this->avtor->removeElement($avtor);
+
+        return $this;
+    }
+
+    public function getAuthorList()
+    {
+        $result = [];
+        foreach ($this->getAvtor() as $author) {
+            $result[] = $author->getName();
+        }
+        return implode(', ', $result);
     }
 
 }

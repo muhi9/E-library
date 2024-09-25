@@ -2,47 +2,49 @@
 {% block title %}E-lybrary | Book{% endblock %}
 {% block body %}
 <div>
+    {% for book in data %}
+
     <div class="d-flex flex-row bd-highlight mb-3">
         <div class="p-2 bd-highlight">
-            <img src="{{upload_dir}}/{{data.cover}}" style="width: 260px; height: 380px">
+            <img src="{{upload_dir}}/{{book.cover}}" style="width: 260px; height: 380px">
         </div>
         <div class="p-2 bd-highlight">
             <table class="table table-striped">
                 <tbody>
                     <tr>
                         <th scope="row">Title</th>
-                        <td>{{data.title}}</td>
+                        <td>{{book.title}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Category</th>
-                        <td>{{category}}</td>
+                        <td>{{book.category}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Author</th>
-                        <td>{{data.author}}</td>
+                        <td>{{book.author}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Release Year</th>
-                        <td>{{data.releaseYear}}</td>
+                        <td>{{book.releaseYear}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Publishing House</th>
-                        <td>{{data.publishingHouse}}</td>
+                        <td>{{book.publishingHouse}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Price</th>
-                        {% if data.price <=0 %} <td> - </td>
+                        {% if book.price <=0 %} <td> - </td>
                             {% else %}
-                            <td>{{data.price}} лв</td>
+                            <td>{{book.price}} лв</td>
                             {% endif %}
                     </tr>
                     <tr>
                         <th scope="row">Views</th>
-                        <td>{{data.views}}</td>
+                        <td>{{book.views}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Description</th>
-                        <td>{{data.description|raw}}</td>
+                        <td>{{book.description|raw}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -50,23 +52,24 @@
     </div>
     <div id="icons">
 
-        {% if data.price <= 0 %} <button type="button" id="view" class="btn">
-            <a href="{{upload_dir}}/{{data.book}}"> <i class="fa-solid fa-book-open-reader fa-2xl"></i></a>
+        {% if book.price <= 0 %} <button type="button" id="view" class="btn">
+            <a href="{{upload_dir}}/{{book.PDF}}"> <i class="fa-solid fa-book-open-reader fa-2xl"></i></a>
             </button>
             <button type="button" id="download" class="btn">
-                <a href="{{upload_dir}}/{{data.book}}" download>
+                <a href="{{upload_dir}}/{{book.PDF}}" download>
                     <i class="fa-solid fa-file-arrow-down" style="font-size: 30px;"></i>
                 </a>
             </button>
 
             {% else %}
             <button type="button" id="download" class="btn">
-                <a href="{{ path('cart_add' ,{'id': data.id}) }}">
+                <a href="{{ path('cart_add' ,{'id': book.id}) }}">
                     <i class="fa-solid fa-file-arrow-down fa-lg"></i>
                 </a>
             </button>
             {% endif %}
     </div>
+    {% endfor %}
 
 </div>
 <style>

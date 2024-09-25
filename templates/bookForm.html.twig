@@ -12,39 +12,42 @@
                 {{ form_row(form.title) }}
             </div>
             <div class="col">
-                {{ form_row(form.author) }}
-            </div>
-            <div class="col">
-                {{ form_row(form.releaseYear, { 'attr': {'placeholder': 'YYYY'|trans, 'pattern':'[0-9]{4}' }}) }}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                {{ form_row(form.price, { 'attr': {'placeholder': '0.00'|trans}}) }}
-            </div>
-            <div class="col">
                 {{ form_row(form.publishingHouse) }}
             </div>
         </div>
 
         <div class="row">
-
             <div class="col">
-                {{ form_row(form.isFree) }}
+                {{ form_row(form.releaseYear, { 'attr': {'placeholder': 'YYYY'|trans, 'pattern':'[0-9]{4}' }}) }}
             </div>
+            <div class="col">
+                {{ form_row(form.price, { 'attr': {'placeholder': '0.00'|trans}}) }}
+            </div>
+
         </div>
 
         <div class="row">
+
+            <div class="col">
+                {{ form_label(form.avtor,'Author') }}
+                {{ form_widget(form.avtor) }}
+            </div>
+            <div class="col">
+                <div class="mb-3"><label for="book_releaseYear" class="form-label required">Another Author</label><input
+                        type="text" class="form-control"> </div>
+            </div>
             <div class="col">
                 {{ form_row(form.categories) }}
             </div>
+        </div>
+        <hr>
+        <div class="row">
             <div class="col-8">
                 {{ form_row(form.description) }}
             </div>
         </div>
         <hr>
-        {% if 'ROLE_TEACHER' not in app.user.getRoles[0] %}
+        {% if 'ROLE_LIBRARIAN' in app.user.getRoles[0] or 'ROLE_ADMIN' in app.user.getRoles[0]%}
         <div class="row">
             <div class="col">
                 {{ form_row(form.validation) }}
@@ -74,6 +77,9 @@
         {{ form_end(form) }}
     </div>
 </div>
+
+<script src="{{ asset('js/bookForm.js') }}"></script>
+
 
 <script>
     ClassicEditor

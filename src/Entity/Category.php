@@ -8,9 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Traits\SoftDeleteableEntity;
+
 use Gedmo\Mapping\Annotation as Gedmo;
 
-
+/**
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ */
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
@@ -22,6 +25,9 @@ class Category
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'categories')]
     #[ORM\JoinTable('category_book')]
@@ -76,4 +82,17 @@ class Category
     function __toString() {
         return $this->name;
     }
+
+    //----------------------------------------------------//
+    public function getDeletedAt() {
+        return $this->deletedAt;
+    }
+    /**
+     * @param \DateTime $deletedAt
+     * @return void
+     */
+    public function setDeletedAt(\DateTime $deletedAt) {
+        $this->deletedAt = $deletedAt;
+    }
+
 }

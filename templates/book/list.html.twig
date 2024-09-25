@@ -21,7 +21,7 @@ and 'ROLE_STUDENT' not in app.user.getRoles[0] %}
 </form>
 
 {% if data is empty %}
-<p> Not matching author !</p>
+<p> Not matching books !</p>
 {% else %}
 
 <table class="table" id="list">
@@ -37,9 +37,7 @@ and 'ROLE_STUDENT' not in app.user.getRoles[0] %}
       <th scope="col">Publishing house</th>
       <th scope="col">Price</th>
 
-      {% if 'ROLE_USER' not in app.user.getRoles[0] and 'ROLE_CLIENT' not in app.user.getRoles[0] and 'ROLE_STUDENT' not
-      in
-      app.user.getRoles[0] %}
+      {% if 'ROLE_ADMIN' in app.user.getRoles[0] or 'ROLE_LIBRARIAN' in app.user.getRoles[0] %}
       <th scope="col">Validation</th>
       <th scope="col">Is Publish</th>
       <th scope="col">Actions</th>
@@ -56,10 +54,10 @@ and 'ROLE_STUDENT' not in app.user.getRoles[0] %}
       <td><a href="/book/authorsBooks/{{book.author}}">{{book.author}}</td>
       <td>{{book.releaseYear}}</td>
       <td>{{book.publishingHouse}}</td>
-      <td>{{book.price}}</td>
+      <td>{{book.price}} лв</td>
 
-      {% if 'ROLE_USER' not in app.user.getRoles[0] and 'ROLE_CLIENT' not in app.user.getRoles[0] and
-      'ROLE_STUDENT' not in app.user.getRoles[0] %}
+      {% if 'ROLE_ADMIN' in app.user.getRoles[0] or 'ROLE_LIBRARIAN' in app.user.getRoles[0] %}
+
       {% if book.validation == false %}
       <td>{{book.validation}}
         <a class="fa" href="{{ path('book_validate', {'id': book.id}) }}">

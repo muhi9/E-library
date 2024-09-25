@@ -47,16 +47,20 @@ class BookController extends AbstractController
     public function listAction(Request $request,  BookRepository $bookRepository, UserPermissions $userPermissions)
     {
         $em = $this->getDoctrine()->getManager();
-        $book = $em->getRepository('App\Entity\Book')->isValidated();
-
+        $book = $em->getRepository('App\Entity\Book')->getBooks('');
         $bookTitle = $request->query->get('bookTitle');
         if ($bookTitle) {
             $b = $em->getRepository('App\Entity\Book')->findByTitle($bookTitle);
-            return $this->render('book\list.html.twig', ['data' => $b, 'filter' => $bookTitle]);
+            if(!empty($b)){
+                $books = $bookRepository->Convert($b);
+                return $this->render('book\list.html.twig', ['data' => $books, 'filter' => $bookTitle]);
+            }
+            return $this->render('book\list.html.twig',['data' => '']);
+
         }
 
         if ($userPermissions->isAdmin() || $userPermissions->isLibrarian()) {
-            $book = $em->getRepository('App\Entity\Book')->findAll();
+            $book = $em->getRepository('App\Entity\Book')->getBooks('admin');
         }
 
         return $this->render('book\list.html.twig', ['data' => $book]);
@@ -72,8 +76,10 @@ class BookController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $book = new Book();
+        $user = $this->getUser();
+        $form = $this->createForm(BookType::class, $book, ['user' => $this->getUser()]);
+        // $form = $this->createForm(UserType::class, $user, ['user' => $this->getUser()]);
 
-        $form = $this->createForm(BookType::class, $book, []);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -101,8 +107,9 @@ class BookController extends AbstractController
                 ->from('muhi-tu@abv.bg')
                 ->to("muhi-tu@abv.bg")  // email from admin or lybrarian
                 ->subject('Please confirm the new book')
-                ->text("Check and confirm the following book -> id:{$book->getId()}, title:{$book->getTitle()}, author:{$book->getAuthor()}
-                link: http://127.0.0.1/book/info/{$book->getId()}");
+                ->text("Check and confirm the following book -> id:{$book->getId()}, title:{$book->getTitle()}, 
+                author:{$book->getAvtor()->getValues()[0]->getName()}
+                link: http://127.0.0.1/book/edit/{$book->getId()}");
 
             $mailer->send($email);
             if ($userPermissions->isTeacher()) {
@@ -122,13 +129,14 @@ class BookController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'book_edit')]
-    public function editAction(Request $request, Book $id = null)
+    public function editAction(Request $request, Book $id = null, FileUploader $fileUploader)
     {
 
         $em = $this->getDoctrine()->getManager();
 
         $book = $em->getRepository("App\Entity\Book")->find($id);
-        $form = $this->createForm(BookType::class, $book);
+        $form = $this->createForm(BookType::class, $book, ['user' => $this->getUser()]);
+        // $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if (isset($notValid['formErrors']) || $request->get('validationRequest') == 'only') {
@@ -139,6 +147,19 @@ class BookController extends AbstractController
             $description = $book->getDescription();
             $description = substr($description, 3, -4);
             $book->setDescription($description);
+
+            $bookFile = $form->get('book')->getData();
+            $bookCover = $form->get('cover')->getData();
+
+            if (!empty($bookCover)) {
+                $bookFileName = $fileUploader->upload($bookFile);
+                $book->setBook($bookFileName);
+            }
+
+            if (!empty($bookCover)) {
+                $bookCoverName = $fileUploader->upload($bookCover);
+                $book->setCover($bookCoverName);
+            }
 
             $em->persist($book);
             $em->flush();
@@ -205,18 +226,16 @@ class BookController extends AbstractController
     }
 
     #[Route('/info/{id}', name: 'book_info')]
-    public function infoAction(Request $request, Book $id = null)
+    public function infoAction(Request $request, Book $id = null, BookRepository $bookRepository,)
     {
         $em = $this->getDoctrine()->getManager();
-        $book = $em->getRepository('App\Entity\Book')->find($id);
-        // $category = $book->getCategories()->getValues()[0]->getName();
-        $category = $book->getCategoriList();
-        $book->setViews($book->getViews() + 1);
-        $em->persist($book);
+        $book[] = $em->getRepository('App\Entity\Book')->find($id);
+        $bookInfo = $bookRepository->Convert($book);
+        $book[0]->setViews($book[0]->getViews() + 1);
+        $em->persist($book[0]);
         $em->flush();
         return $this->render('book\info.html.twig', [
-            'data' => $book,
-            'category' => $category
+            'data' => $bookInfo,
         ]);
     }
 
@@ -298,7 +317,8 @@ class BookController extends AbstractController
 
             return $this->redirectToRoute('index');
         }
-        $this->getDoctrine()->getRepository(Author::class)->find($id);
+
+        $this->getDoctrine()->getRepository(Author::class)->findBy(['deletedAt' => null]);
         $em = $this->getDoctrine()->getManager();
         $em->remove($id);
         $em->flush();
@@ -307,9 +327,10 @@ class BookController extends AbstractController
     }
 
     #[Route('/authorsBooks/{authorName}', name: 'authors_books')]
-    public function authorsBookS(Request $request, BookRepository $bookRepository, $authorName){
+    public function authorsBookS(Request $request, BookRepository $bookRepository, $authorName)
+    {
         $books = $bookRepository->getAuthorsBooks($authorName);
-     
-        return $this->render('book\authorsBooks.html.twig',['data' => $books]);
+        $books = $bookRepository->Convert($books);
+        return $this->render('book\authorsBooks.html.twig', ['data' => $books]);
     }
 }

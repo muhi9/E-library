@@ -42,9 +42,7 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
             ])
-                // ->add('typeUser')
                 ->add('isVerified');
-                // ->add('password');
         };
         $builder
             ->add('save',SubmitType::class)

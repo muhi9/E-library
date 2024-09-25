@@ -22,21 +22,34 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/homepage', name: 'homepage')]
-    public function homepage(Request $request, CategoryRepository $categoryRepository,BookRepository $bookRepository ): Response
+    public function homepage(Request $request, CategoryRepository $categoryRepository, BookRepository $bookRepository): Response
     {
         $em = $this->getDoctrine()->getManager();
         $filterCategories = $categoryRepository->findAll();
-       
+
         $filter = $request->query->all();
         if ($filter) {
-        $b = $em->getRepository('App\Entity\Book')->findByFilters($filter);
-            return $this->render('homepage\homepage.html.twig', ['data' => $b, 'categories' => $filterCategories]);
+            $data = $em->getRepository('App\Entity\Book')->findByFilters($filter);
+            $books = array();
+            foreach ($data as $b) {
+                $books[] = [
+                    'id' => $b->getId(),
+                    'cover' => $b->getCover(),
+                    'title' => $b->getTitle(),
+                    'author' => $b->getAuthorList(),
+                ];
+            };
+            return $this->render('homepage\homepage.html.twig', [
+                'data' => $books,
+                'categories' => $filterCategories,
+                'searchBoxInput' => $filter
+            ]);
         }
 
-        $book = $bookRepository->isValidated();
+        $books = $bookRepository->getBooks('');
 
         return $this->render('homepage\homepage.html.twig', [
-            'data' => $book, 
+            'data' => $books,
             'categories' => $filterCategories,
         ]);
     }

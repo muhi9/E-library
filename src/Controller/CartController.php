@@ -58,7 +58,7 @@ class CartController extends AbstractController
             $cartInfo[] = [
                 'id' => $elm->getId(),
                 'title' => $elm->getCartBook()->getTitle(),
-                'author' => $elm->getCartBook()->getAuthor(),
+                'author' => $elm->getCartBook()->getAuthorList(),
                 'cover' => $elm->getCartBook()->getCover(),
                 'price' => $elm->getCartBook()->getPrice(),
                 'book' => $elm->getCartBook()->getBook(),

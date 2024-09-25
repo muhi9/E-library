@@ -1,11 +1,10 @@
 <link href="{{ asset('css/searchBox.css') }}" type="text/css" rel="stylesheet" />
-
 <div class="d-flex flex-row ">
   <div style="position: relative; top: 10px">
     <form action="" method="get">
       <div class="search-box">
         <button id="btnSbmt" class="btn-search"><i class="fas fa-search"></i></button>
-        <input type="text" name="bookName" class="input-search" value="{{filter|default('')}}"
+        <input type="text" name="bookName" class="input-search" autofocus value="{{searchBoxInput.bookName|default('')}}"
           placeholder="Type book name...">
       </div>
       <br>
@@ -35,6 +34,10 @@
 
   </div>
 </div>
+<script>
+
+</script>
+
 
 {# <style>
   .buttons {
