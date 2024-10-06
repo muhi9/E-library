@@ -25,7 +25,8 @@ class BookRepository extends ServiceEntityRepository
     function findByFilters($filter)
     {
         $qb = $this->createQueryBuilder('b');
-        $qb->select('b');
+        $qb->select('b')
+        ->andWhere('b.validation = 1');
 
         if (!empty($filter['category'])) {
             $qb->leftJoin('b.categories', 'cats')
@@ -53,22 +54,6 @@ class BookRepository extends ServiceEntityRepository
         return $result;
     }
 
-    // public function searchAuthor(string $term): array
-    // {
-    //     $qb = $this->createQueryBuilder('book');
-    //     $qb->select('book');
-    //     $qb->andWhere('book.author LIKE :searchTerm')
-    //         ->setParameter('searchTerm', $term . '%');
-    //     $result =  $qb->getQuery()->getResult();
-
-    //     $authors = [];
-    //     foreach ($result as $elm) {
-    //         array_push($authors, $elm->getAuthor());
-    //     }
-
-    //     return $authors;
-    // }
-
     public function getBooks($admin)
     {
         $qb = $this->createQueryBuilder('b');
@@ -94,6 +79,7 @@ class BookRepository extends ServiceEntityRepository
                 'category' => $b->getCategoriList(),
                 'publishingHouse' => $b->getPublishingHouse(),
                 'author' => $b->getAuthorList(),
+                'authorId' => $b->getAuthorId(),
             ];
         };
 
@@ -120,16 +106,6 @@ class BookRepository extends ServiceEntityRepository
 
         return $result;
     }
-
-    // public function isValidated()
-    // {
-    //     $qb = $this->createQueryBuilder('b');
-    //     $qb->select('b')
-    //         ->where('b.validation = 1');
-
-    //     $result =  $qb->getQuery()->getResult();
-    //     return $result;
-    // }
 
     public function Convert($data){
         foreach ($data as $b) {

@@ -6,13 +6,13 @@
     <nav>
         <ul>
             <li>
-                {% if 'ROLE_USER' not in app.user.getRoles[0] and 'ROLE_CLIENT' not in app.user.getRoles[0]
-                and 'ROLE_STUDENT' not in app.user.getRoles[0] %}
+                {% if 'ROLE_ADMIN' in app.user.getRoles[0] or 'ROLE_TEACHER' in app.user.getRoles[0]
+                or 'ROLE_LIBRARIAN' in app.user.getRoles[0] %}
                 <a href="/notifications_create">
                     <span id='notification' class="material-icons-outlined"
                         style="font-size: 33px;">notifications_none</span>
                 </a>
-                {% else %}
+                {% elseif 'ROLE_STUDENT' in app.user.getRoles[0] %}
                 <a onclick="notification()">
                     <span id='notification' class="material-icons-outlined"
                         style="font-size: 33px;">notifications_none</span>
@@ -60,6 +60,7 @@
 <div id='modal' class="modal-dialog" style="position: fixed;width: 100%;height: auto;
                                             left: 62rem;top: 37px;display: none;">
     <div class="modal-content">
+
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Notifications &#128276;</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"

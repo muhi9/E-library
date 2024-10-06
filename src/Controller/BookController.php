@@ -51,14 +51,12 @@ class BookController extends AbstractController
         $bookTitle = $request->query->get('bookTitle');
         if ($bookTitle) {
             $b = $em->getRepository('App\Entity\Book')->findByTitle($bookTitle);
-            if(!empty($b)){
+            if (!empty($b)) {
                 $books = $bookRepository->Convert($b);
                 return $this->render('book\list.html.twig', ['data' => $books, 'filter' => $bookTitle]);
             }
-            return $this->render('book\list.html.twig',['data' => '']);
-
+            return $this->render('book\list.html.twig', ['data' => '']);
         }
-
         if ($userPermissions->isAdmin() || $userPermissions->isLibrarian()) {
             $book = $em->getRepository('App\Entity\Book')->getBooks('admin');
         }
@@ -326,11 +324,13 @@ class BookController extends AbstractController
         return $this->redirectToRoute('authors_book');
     }
 
-    #[Route('/authorsBooks/{authorName}', name: 'authors_books')]
-    public function authorsBookS(Request $request, BookRepository $bookRepository, $authorName)
+    #[Route('/authorsBooks/{authorId}', name: 'authors_books')]
+    public function authorsBookS(Request $request, BookRepository $bookRepository, $authorId)
     {
-        $books = $bookRepository->getAuthorsBooks($authorName);
-        $books = $bookRepository->Convert($books);
-        return $this->render('book\authorsBooks.html.twig', ['data' => $books]);
+        $em = $this->getDoctrine()->getManager();
+        $author = $em->getRepository("App\Entity\Author")->find($authorId);
+        $authorBooks = $bookRepository->Convert($author->getBooks());
+
+        return $this->render('book\authorsBooks.html.twig', ['data' => $authorBooks]);
     }
 }

@@ -52,17 +52,18 @@
                                 </div>
                                 <div class="form-wrapper">
                                     {{form_widget(registrationForm.typeUser)}}
-
                                 </div>
                             </div>
                         </div>
                         <div class="input-group mb-3">
                             {{form_widget(registrationForm.email)}}
+                            {{ form_errors(registrationForm.email) }}
                         </div>
                         <div id="emailErr" style="display: none; color: red;">Invalid email</div>
                         <div class="input-group mb-3">
                             {{form_widget(registrationForm.phone)}}
                         </div>
+                        <div id="phoneErr" style="display: none; color: red;">Invalid phone number</div>
                         <div class="form-group">
                             <div class="form-wrapper">
                                 {{form_widget(registrationForm.plainPassword)}}

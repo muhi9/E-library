@@ -28,4 +28,18 @@ document.addEventListener('DOMContentLoaded', function () {
       
    }
    document.getElementById('registration_form_email').addEventListener('change', validateEmail);
+
+   // validate phone number
+   function validatePhone() {
+      let input = document.getElementById('registration_form_phone')
+      let regex = /^[0-9]*$/;
+      
+      if (!input.value.match(regex)) {
+         document.getElementById('phoneErr').style.display = 'block';
+      } else {
+         document.getElementById('phoneErr').style.display = 'none';
+      }
+      
+   }
+   document.getElementById('registration_form_phone').addEventListener('change', validatePhone);
 });

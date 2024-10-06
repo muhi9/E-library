@@ -79,21 +79,6 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request,VerifyEmailHelperInterface $verifyEmailHelper, 
     TranslatorInterface $translator, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
-        // dump('ssss');
-        // die;
-        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        // // validate email confirmation link, sets User::isVerified=true and persists
-        // try {
-        //     $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        // } catch (VerifyEmailExceptionInterface $exception) {
-        //     $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
-        //     return $this->redirectToRoute('register');
-        // }
-        
-        // // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        // $this->addFlash('success', 'Your email address has been verified.');
-
         $user = $userRepository->find($request->query->get('id'));
         if (!$user) {
             throw $this->createNotFoundException();

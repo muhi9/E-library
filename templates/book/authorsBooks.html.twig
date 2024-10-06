@@ -6,6 +6,7 @@
 <div class="container">
     <div class="row">
         {% for book in data %}
+        {% if book.validation == true %}
         <div class="col-sm-3" style="margin-bottom: 1rem">
             <a href="/book/info/{{ book.id }}">
                 <img class="img" src="{{upload_dir}}/{{book.cover}}" style="width: 65%; height: 80%">
@@ -17,8 +18,8 @@
             </div>
         </div>
 
+        {% endif %}
         {% endfor %}
-
     </div>
 </div>
 

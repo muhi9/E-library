@@ -375,4 +375,13 @@ class Book
         return implode(', ', $result);
     }
 
+    public function getAuthorId()
+    {
+        $result = [];
+        foreach ($this->getAvtor() as $author) {
+            $result[] = $author->getId();
+        }
+        return implode(', ', $result);
+    }
+
 }

@@ -51,7 +51,7 @@ and 'ROLE_STUDENT' not in app.user.getRoles[0] %}
       <td><a href="/book/info/{{book.id}}">{{book.title}}</a></td>
       <td>{{book.description|raw}}</td>
       {# <td>{{book.categories}}</td> #}
-      <td><a href="/book/authorsBooks/{{book.author}}">{{book.author}}</td>
+      <td><a href="/book/authorsBooks/{{book.authorId}}">{{book.author}}</td>
       <td>{{book.releaseYear}}</td>
       <td>{{book.publishingHouse}}</td>
       <td>{{book.price}} лв</td>

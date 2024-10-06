@@ -35,36 +35,17 @@ class NotificationsController extends AbstractController
                 'description'=>$elm->getDescription(),
                 'status'=>$elm->isStatus(),
            ];
-            // array_push( $data,[
-            //     'id'=>$elm->getId(),
-            //     'subject'=>$elm->getSubject(),
-            //     'description'=>$elm->getDescription(),
-            //     'status'=>$elm->isStatus(),
-            // ]);
         }
         
         // Handle the AJAX request
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse($data);
-            //echo json_encode(array_slice($data, 0, 3));
         }
 
         // If not an AJAX request, return a 404 error
         return new Response('Not Found', 404);
         return $this->render('notifications/index.html.twig');
     }
-
-
-    // #[Route('/notifications', name: 'app_notifications')]
-    // public function index(): Response
-    // {       
-
-    //     $notifications = $this->getUser()->getNotifications()->getValues();
-
-    //     return $this->render('notifications/index.html.twig', [
-    //         'notifications' => $notifications
-    //     ]);
-    // }
 
     #[Route('/notifications_create', name: 'app_notifications_create')]
     public function addAction(Request $request, UserPermissions $userPermissions)
@@ -91,7 +72,6 @@ class NotificationsController extends AbstractController
                 $notifications = clone $notifications;
             }
             $em->flush();
-
 
             return $this->redirectToRoute('index');
         }

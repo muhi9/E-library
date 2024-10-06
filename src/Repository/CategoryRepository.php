@@ -34,8 +34,6 @@ class CategoryRepository extends ServiceEntityRepository
 
         $result =  $qb->getQuery()->getResult();
         return $result;
-        // dump($result);
-        // die;
     }
 
     public function getCategory()
@@ -45,30 +43,4 @@ class CategoryRepository extends ServiceEntityRepository
         $result =  $qb->getQuery()->getResult();
         return $result;
     }
-
-
-//    /**
-//     * @return Category[] Returns an array of Category objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Category
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
